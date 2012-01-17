@@ -1,0 +1,5 @@
+This version of Casper includes quite a few changes made localy at NHnet because
+we use USB to load our images instead of CD.
+
+We also like to have a set password for our user instead of no password at all.
+
