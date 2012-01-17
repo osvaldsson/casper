@@ -1,0 +1,36 @@
+#!/bin/sh
+
+PREREQ=""
+DESCRIPTION="Setting up init..."
+
+prereqs()
+{
+       echo "$PREREQ"
+}
+
+case $1 in
+# get pre-requisites
+prereqs)
+       prereqs
+       exit 0
+       ;;
+esac
+
+. /scripts/casper-functions
+
+log_begin_msg "$DESCRIPTION"
+
+# Disable readahead since it doesn't play well with squashfs + unionfs
+# use chmod instead of mv to not trigger unionfs bugs.
+if [ -e /root/sbin/readahead-list ]; then
+	chmod -x /root/sbin/readahead-list
+fi
+
+# Disable ureadahead too since we don't ship a pack file for it anyway, so
+# all we'll end up doing is profiling the live CD boot. ureadahead also
+# breaks partman occasionally by reading from its synchronisation FIFOs.
+rm -f /root/etc/init/ureadahead.conf
+
+log_end_msg
+
+exit 0
